@@ -48,6 +48,10 @@ export default class LinkedList {
   }
   pop(currentNode = this.head) {
     if (!currentNode) return;
+    if (!currentNode.next) {
+      this.head = null;
+      return;
+    }
     if (!currentNode.next.next) {
       currentNode.next = null;
       return;
@@ -90,12 +94,11 @@ export default class LinkedList {
   removeAt(searchIndex, index = 0, currentNode = this.head) {
     if (!currentNode) return;
     if (index > searchIndex) return;
-    if (index === searchIndex - 1) {
+    if (index === searchIndex - 1 && currentNode.next) {
       currentNode.next = currentNode.next.next;
       return;
     }
-    index++;
-    currentNode = currentNode.next;
-    return this.removeAt(searchIndex, index, currentNode);
+    // ++index to increment BEFORE sending reading it in function
+    return this.removeAt(searchIndex, ++index, currentNode.next);
   }
 }
