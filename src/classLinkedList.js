@@ -36,15 +36,13 @@ export default class LinkedList {
   tail(currentNode = this.head) {
     if (!currentNode) return this.head;
     if (!currentNode.next) return currentNode;
-    currentNode = currentNode.next;
-    return this.tail(currentNode);
+    return this.tail(currentNode.next);
   }
   at(index, currentNode = this.head, currentIndex = 0) {
     if (!currentNode) return false;
     if (currentIndex === index) return currentNode;
-    currentIndex++;
-    currentNode = currentNode.next;
-    return this.at(index, currentNode, currentIndex);
+    // Make sure it's ++currentIndex, NOT currentIndex++, it needs to be incremented BEFORE being read
+    return this.at(index, currentNode.next, ++currentIndex);
   }
   pop(currentNode = this.head) {
     if (!currentNode) return;
@@ -62,16 +60,13 @@ export default class LinkedList {
     if (!currentNode) return false;
     if (searchData === currentNode.data) return true;
     if (currentNode.next === null) return false;
-    currentNode = currentNode.next;
-    return this.contains(searchData, currentNode);
+    return this.contains(searchData, currentNode.next);
   }
   find(searchData, index = 0, currentNode = this.head) {
     if (!currentNode) return false;
     if (searchData === currentNode.data) return index;
     if (currentNode.next === null) return false;
-    index++;
-    currentNode = currentNode.next;
-    return this.find(searchData, index, currentNode);
+    return this.find(searchData, ++index, currentNode.next);
   }
   toString(currentNode = this.head) {
     if (!currentNode) return null;
@@ -87,9 +82,7 @@ export default class LinkedList {
       currentNode.next = newNode;
       return;
     }
-    index++;
-    currentNode = currentNode.next;
-    return this.insertAt(insertData, searchIndex, index, currentNode);
+    return this.insertAt(insertData, searchIndex, ++index, currentNode.next);
   }
   removeAt(searchIndex, index = 0, currentNode = this.head) {
     if (!currentNode) return;
@@ -98,7 +91,6 @@ export default class LinkedList {
       currentNode.next = currentNode.next.next;
       return;
     }
-    // ++index to increment BEFORE sending reading it in function
     return this.removeAt(searchIndex, ++index, currentNode.next);
   }
 }
